@@ -30,4 +30,8 @@ public class Client extends User {
         super(id, name, cpf, email, password, profile, createDate);
         this.requests = requests;
     }
+
+    public Client(Long id, String name, String cpf, String email, String password) {
+        super(id, name, cpf, email, password);
+    }
 }

@@ -28,4 +28,8 @@ public class Technician extends User {
         super(id, name, cpf, email, password, profile, createDate);
         this.requests = requests;
     }
+
+    public Technician(Long id, String name, String cpf, String email, String password) {
+        super(id, name, cpf, email, password);
+    }
 }

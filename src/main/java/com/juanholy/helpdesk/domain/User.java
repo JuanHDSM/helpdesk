@@ -54,4 +54,17 @@ public abstract class User {
         this.createDate = createDate;
         this.profile.add(Profile.CLIENT);
     }
+
+    public User(Long id, String name, String cpf, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.password = password;
+        this.profile.add(Profile.CLIENT);
+    }
+
+    public void addProfile(Profile profile) {
+        this.profile.add(profile);
+    }
 }

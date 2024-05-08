@@ -26,7 +26,7 @@ public class Request {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate closedDate;
     private Priority priority;
-    private Status status;
+    private Status status = Status.OPEN;
     private String title;
     private String description;
     @ManyToOne
@@ -35,4 +35,15 @@ public class Request {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    public Request(Long id, LocalDate closedDate, Priority priority, Status status, String title, String description, Technician technician, Client client) {
+        this.id = id;
+        this.closedDate = closedDate;
+        this.priority = priority;
+        this.status = status;
+        this.title = title;
+        this.description = description;
+        this.technician = technician;
+        this.client = client;
+    }
 }
