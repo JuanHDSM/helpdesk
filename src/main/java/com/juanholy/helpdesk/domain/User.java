@@ -39,6 +39,7 @@ public abstract class User {
     @JsonFormat(pattern = "dd//MM//yyyy")
     protected LocalDate createDate = LocalDate.now();
 
+
     public User() {
         super();
         this.profile.add(Profile.CLIENT);
