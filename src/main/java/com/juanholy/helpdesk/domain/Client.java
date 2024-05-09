@@ -1,5 +1,6 @@
 package com.juanholy.helpdesk.domain;
 
+import com.juanholy.helpdesk.domain.dtos.ClientRequestDTO;
 import com.juanholy.helpdesk.domain.enums.Profile;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -31,7 +32,11 @@ public class Client extends User {
         this.requests = requests;
     }
 
-    public Client(Long id, String name, String cpf, String email, String password) {
-        super(id, name, cpf, email, password);
+    public Client(Long id, String name, String cpf, String email, String password, Profile profile) {
+        super(id, name, cpf, email, password, profile);
+    }
+
+    public Client(ClientRequestDTO clientRequestDTO) {
+        super(clientRequestDTO);
     }
 }
