@@ -1,6 +1,7 @@
 package com.juanholy.helpdesk.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.juanholy.helpdesk.domain.dtos.RequestDTO;
 import com.juanholy.helpdesk.domain.enums.Priority;
 import com.juanholy.helpdesk.domain.enums.Status;
 import jakarta.persistence.*;
@@ -45,5 +46,11 @@ public class Request {
         this.description = description;
         this.technician = technician;
         this.client = client;
+    }
+
+    public Request(RequestDTO data) {
+        this.priority = data.priority();
+        this.title = data.title();
+        this.description = data.description();
     }
 }

@@ -1,5 +1,6 @@
 package com.juanholy.helpdesk.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juanholy.helpdesk.domain.dtos.ClientRequestDTO;
 import com.juanholy.helpdesk.domain.enums.Profile;
 import jakarta.persistence.Entity;
@@ -21,10 +22,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
 public class Client extends User {
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<Request> requests =  new ArrayList<>();
 
     public Client(Long id, String name, @CPF String cpf, String email, String password, Set<Profile> profile, LocalDate createDate, List<Request> requests) {
