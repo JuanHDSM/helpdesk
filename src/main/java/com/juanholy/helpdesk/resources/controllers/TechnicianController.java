@@ -1,6 +1,5 @@
 package com.juanholy.helpdesk.resources.controllers;
 
-import com.juanholy.helpdesk.domain.Technician;
 import com.juanholy.helpdesk.domain.dtos.TechnicianRequestDTO;
 import com.juanholy.helpdesk.domain.dtos.TechnicianResponseDTO;
 import com.juanholy.helpdesk.resources.services.TechnicianService;

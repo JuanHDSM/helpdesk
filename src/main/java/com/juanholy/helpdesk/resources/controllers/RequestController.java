@@ -1,6 +1,5 @@
 package com.juanholy.helpdesk.resources.controllers;
 
-import com.juanholy.helpdesk.domain.Request;
 import com.juanholy.helpdesk.domain.dtos.RequestDTO;
 import com.juanholy.helpdesk.domain.dtos.RequestResponseDTO;
 import com.juanholy.helpdesk.resources.services.RequestService;
