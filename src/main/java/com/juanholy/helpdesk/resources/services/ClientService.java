@@ -1,17 +1,15 @@
 package com.juanholy.helpdesk.resources.services;
 
 import com.juanholy.helpdesk.domain.Client;
-import com.juanholy.helpdesk.domain.Technician;
+import com.juanholy.helpdesk.domain.User;
 import com.juanholy.helpdesk.domain.dtos.ClientRequestDTO;
 import com.juanholy.helpdesk.domain.dtos.ClientResponseDTO;
-import com.juanholy.helpdesk.domain.dtos.TechnicianRequestDTO;
-import com.juanholy.helpdesk.domain.dtos.TechnicianResponseDTO;
 import com.juanholy.helpdesk.repositories.ClientRepository;
-import com.juanholy.helpdesk.repositories.TechnicianRepository;
+import com.juanholy.helpdesk.repositories.UserRepository;
+import com.juanholy.helpdesk.resources.services.exceptions.DataIntegrityViolationException;
+import com.juanholy.helpdesk.resources.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,6 +18,8 @@ public class ClientService {
 
     @Autowired
     private ClientRepository repository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<ClientResponseDTO> findAll() {
         List<Client> list = repository.findAll();
@@ -28,23 +28,20 @@ public class ClientService {
 
     public ClientResponseDTO findById(Long id) {
         Client entity = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Cliente não encontrado."
-                ));
+                .orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado."));
         return ClientResponseDTO.fromClientResponseDTO(entity);
     }
 
     public ClientResponseDTO findByCpf(String cpf) {
-        Client client = repository.findByCpf(cpf);
-        return ClientResponseDTO.fromClientResponseDTO(client);
+        User user = userRepository.findByCpf(cpf);
+        return ClientResponseDTO.fromUserResponseDTO(user);
     }
 
-    public ClientResponseDTO insert(ClientRequestDTO obj) {
-        if (repository.findByCpf(obj.cpf()) != null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF já cadastrado.");
-        }
-        Client entity = repository.save(new Client(obj));
-        return ClientResponseDTO.fromClientResponseDTO(entity);
+    public ClientResponseDTO insert(ClientRequestDTO objDTO) {
+        Client obj = new Client(objDTO);
+        ValidCpfAndEmail(objDTO);
+        repository.save(obj);
+        return ClientResponseDTO.fromClientResponseDTO(obj);
     }
 
     public void delete(Long id) {
@@ -57,7 +54,16 @@ public class ClientService {
             obj.setId(u.getId());
             repository.save(obj);
             return obj;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado.", new Throwable("Cliente não encontrado")));
+        }).orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado."));
         return ClientResponseDTO.fromClientResponseDTO(entity);
+    }
+
+    private void ValidCpfAndEmail(ClientRequestDTO objDTO) {
+        if (userRepository.findByCpf(objDTO.cpf()) != null){
+            throw new DataIntegrityViolationException("CPF já cadastrado.");
+        }
+        if (userRepository.findByEmail(objDTO.email()) != null) {
+            throw new DataIntegrityViolationException("E-mail já cadastrado.");
+        }
     }
 }

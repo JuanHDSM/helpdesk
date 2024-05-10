@@ -8,10 +8,9 @@ import com.juanholy.helpdesk.domain.dtos.RequestResponseDTO;
 import com.juanholy.helpdesk.repositories.ClientRepository;
 import com.juanholy.helpdesk.repositories.RequestRepository;
 import com.juanholy.helpdesk.repositories.TechnicianRepository;
+import com.juanholy.helpdesk.resources.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,15 +31,15 @@ public class RequestService {
 
     public RequestResponseDTO findById(Long id) {
         Request obj = repository.findById(id)
-                .orElseThrow( () -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Chamado não encontrado."
+                .orElseThrow( () -> new ObjectNotFoundException(
+                        "Chamado não encontrado."
                 ));
         return RequestResponseDTO.fromRequestResponseDTO(obj);
     }
 
     public RequestResponseDTO insert(RequestDTO obj) {
-        Technician tec = technicianRepository.findById(obj.technician_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Técnico não encotrado"));
-        Client cli = clientRepository.findById(obj.client_id()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente não encotrado"));
+        Technician tec = technicianRepository.findById(obj.technician_id()).orElseThrow(() -> new ObjectNotFoundException("Técnico não encotrado."));
+        Client cli = clientRepository.findById(obj.client_id()).orElseThrow(() -> new ObjectNotFoundException("Cliente não encotrado."));
         Request request = new Request(obj);
         request.setTechnician(tec);
         request.setClient(cli);
@@ -61,8 +60,8 @@ public class RequestService {
                 }
         ).orElseThrow(
                 () ->
-                        new ResponseStatusException(
-                                HttpStatus.NOT_FOUND, "Chamado não encontrado."
+                        new ObjectNotFoundException(
+                                "Chamado não encontrado."
                         )
         );
         return RequestResponseDTO.fromRequestResponseDTO(entity);
