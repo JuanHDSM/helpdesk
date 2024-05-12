@@ -9,6 +9,8 @@ import com.juanholy.helpdesk.repositories.UserRepository;
 import com.juanholy.helpdesk.resources.services.exceptions.DataIntegrityViolationException;
 import com.juanholy.helpdesk.resources.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +44,10 @@ public class ClientService {
         ValidCpfAndEmail(objDTO);
         repository.save(obj);
         return ClientResponseDTO.fromClientResponseDTO(obj);
+    }
+
+    public UserDetails loadByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByLogin(username);
     }
 
     public void delete(Long id) {

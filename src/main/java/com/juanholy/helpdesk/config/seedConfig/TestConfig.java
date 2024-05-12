@@ -1,4 +1,4 @@
-package com.juanholy.helpdesk;
+package com.juanholy.helpdesk.config.seedConfig;
 
 import com.juanholy.helpdesk.domain.Client;
 import com.juanholy.helpdesk.domain.Request;
